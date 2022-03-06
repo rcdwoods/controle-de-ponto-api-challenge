@@ -1,5 +1,6 @@
 package br.com.controledeponto.model;
 
+import br.com.controledeponto.constant.NumberConstant;
 import br.com.controledeponto.exception.DeveHaverNoMinimoUmaHoraDeAlmocoException;
 import br.com.controledeponto.exception.HorarioInferiorAoUltimoRegistradoException;
 import br.com.controledeponto.exception.HorarioJaRegistradoException;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 public class RegistroDeTrabalho {
 	private LocalDate dia;
 	private List<Momento> momentosRegistrados = new ArrayList<>();
+	private static final int JORNADA_DE_TRABALHO_EM_MINUTOS = 480;
+	private static final int LIMITE_DE_REGISTROS = 4;
 
 	RegistroDeTrabalho(LocalDate dia) {
 		this.dia = dia;
@@ -28,13 +31,13 @@ public class RegistroDeTrabalho {
 	}
 
 	Duration getHorasExcedentes() {
-		if (getHorasTrabalhadas().toMinutes() <= 480) return Duration.ZERO;
-		return getHorasTrabalhadas().minusMinutes(480);
+		if (getHorasTrabalhadas().toMinutes() <= JORNADA_DE_TRABALHO_EM_MINUTOS) return Duration.ZERO;
+		return getHorasTrabalhadas().minusMinutes(JORNADA_DE_TRABALHO_EM_MINUTOS);
 	}
 
 	Duration getHorasDevidas() {
-		if (getHorasTrabalhadas().toMinutes() >= 480) return Duration.ZERO;
-		return Duration.ofMinutes(480).minus(getHorasTrabalhadas());
+		if (getHorasTrabalhadas().toMinutes() >= JORNADA_DE_TRABALHO_EM_MINUTOS) return Duration.ZERO;
+		return Duration.ofMinutes(JORNADA_DE_TRABALHO_EM_MINUTOS).minus(getHorasTrabalhadas());
 	}
 
 	List<Momento> getMomentosRegistrados() {
@@ -48,16 +51,16 @@ public class RegistroDeTrabalho {
 	}
 
 	private Duration getHorasDaPrimeiraEntradaESaida() {
-		if (momentosRegistrados.size() < 2) return Duration.ZERO;
-		LocalDateTime primeiraEntrada = momentosRegistrados.get(0).getDataHora();
-		LocalDateTime primeiraSaida = momentosRegistrados.get(1).getDataHora();
+		if (momentosRegistrados.size() < NumberConstant.TWO) return Duration.ZERO;
+		LocalDateTime primeiraEntrada = momentosRegistrados.get(NumberConstant.ZERO).getDataHora();
+		LocalDateTime primeiraSaida = momentosRegistrados.get(NumberConstant.ONE).getDataHora();
 		return Duration.between(primeiraEntrada, primeiraSaida);
 	}
 
 	private Duration getHorasDaSegundaEntradaESaida() {
-		if (momentosRegistrados.size() < 4) return Duration.ZERO;
-		LocalDateTime primeiraEntrada = momentosRegistrados.get(2).getDataHora();
-		LocalDateTime primeiraSaida = momentosRegistrados.get(3).getDataHora();
+		if (momentosRegistrados.size() < LIMITE_DE_REGISTROS) return Duration.ZERO;
+		LocalDateTime primeiraEntrada = momentosRegistrados.get(NumberConstant.TWO).getDataHora();
+		LocalDateTime primeiraSaida = momentosRegistrados.get(NumberConstant.THREE).getDataHora();
 		return Duration.between(primeiraEntrada, primeiraSaida);
 	}
 
@@ -66,7 +69,7 @@ public class RegistroDeTrabalho {
 			throw new HorarioInferiorAoUltimoRegistradoException("Horário inferior ao último registrado.");
 		if (hasMomentoRegistradoComOMesmoHorario(momento))
 			throw new HorarioJaRegistradoException("Horários já registrado");
-		if (this.momentosRegistrados.size() == 4)
+		if (this.momentosRegistrados.size() == LIMITE_DE_REGISTROS)
 			throw new NaoPodeHaverMaisDeQuatroRegistrosException("Apenas 4 horários podem ser registrados por dia");
 		if (hasMenosHorasDeAlmocoDoQueOMinimo(momento))
 			throw new DeveHaverNoMinimoUmaHoraDeAlmocoException("Deve haver no mínimo 1 hora de almoço");
@@ -80,11 +83,11 @@ public class RegistroDeTrabalho {
 	}
 
 	private boolean hasMenosHorasDeAlmocoDoQueOMinimo(Momento momento) {
-		if (this.momentosRegistrados.size() != 2) return false;
+		if (this.momentosRegistrados.size() != NumberConstant.TWO) return false;
 		Momento ultimoMomentoRegistrado = getUltimoMomentoRegistrado();
 		long diferencaEmHorasEntreUltimoMomento =
 			Duration.between(ultimoMomentoRegistrado.getDataHora(), momento.getDataHora()).toHours();
-		return diferencaEmHorasEntreUltimoMomento == 0;
+		return diferencaEmHorasEntreUltimoMomento == NumberConstant.ZERO;
 	}
 
 	private boolean hasMomentoRegistradoComOMesmoHorario(Momento momento) {
@@ -101,7 +104,7 @@ public class RegistroDeTrabalho {
 
 	private Momento getUltimoMomentoRegistrado() {
 		if (momentosRegistrados.isEmpty()) return null;
-		int posicaoDoUltimoMomento = this.momentosRegistrados.size() - 1;
+		int posicaoDoUltimoMomento = this.momentosRegistrados.size() - NumberConstant.ONE;
 		return this.momentosRegistrados
 			.stream()
 			.sorted(Comparator.comparing(momento -> momento.getDataHora()))
