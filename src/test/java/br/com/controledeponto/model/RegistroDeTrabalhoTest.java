@@ -29,5 +29,19 @@ class RegistroDeTrabalhoTest {
 		Assertions.assertThat(registroDeTrabalho.getMomentosRegistrados().get(0).getDataHora()).isEqualTo("2022-12-01T08:00:00");
 		Assertions.assertThat(registroDeTrabalho.getMomentosRegistrados().get(1).getDataHora()).isEqualTo("2022-12-01T09:00:00");
 	}
+
+	@Test
+	void naoDeveRegistrarUmMomentoELancarUmaExceptionQuandoDataHoraForMenorDoQueOMomentoAnterior() throws HorarioInferiorAoUltimoRegistradoException, HorarioJaRegistradoException, NaoPodeHaverMaisDeQuatroRegistrosException, DeveHaverNoMinimoUmaHoraDeAlmocoException, NaoPodeRegistrarHorasEmFinalDeSemanaException {
+		RegistroDeTrabalho registroDeTrabalho = new RegistroDeTrabalho(LocalDate.parse("2022-12-01"));
+		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T08:00:00")));
+
+		Exception exception = org.junit.jupiter.api.Assertions.assertThrows(HorarioInferiorAoUltimoRegistradoException.class, () -> {
+			Momento momentoComHorarioMenor = new Momento(LocalDateTime.parse("2022-12-01T07:00:00"));
+			registroDeTrabalho.registrarMomento(momentoComHorarioMenor);
+		});
+
+		Assertions.assertThat(exception.getMessage()).isEqualTo("Horário inferior ao último registrado.");
+	}
+
 		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T18:00:00")));
 }
