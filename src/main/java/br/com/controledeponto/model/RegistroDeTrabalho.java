@@ -39,6 +39,15 @@ public class RegistroDeTrabalho {
 			throw new HorarioJaRegistradoException("Horários já registrado");
 		if (this.momentosRegistrados.size() == 4)
 			throw new NaoPodeHaverMaisDeQuatroRegistrosException("Apenas 4 horários podem ser registrados por dia");
+		if (hasMenosHorasDeAlmocoDoQueOMinimo(momento))
+			throw new DeveHaverNoMinimoUmaHoraDeAlmocoException("Deve haver no mínimo 1 hora de almoço");
+
+	private boolean hasMenosHorasDeAlmocoDoQueOMinimo(Momento momento) {
+		if (this.momentosRegistrados.size() != 2) return false;
+		Momento ultimoMomentoRegistrado = getUltimoMomentoRegistrado();
+		long diferencaEmHorasEntreUltimoMomento =
+			Duration.between(ultimoMomentoRegistrado.getDataHora(), momento.getDataHora()).toHours();
+		return diferencaEmHorasEntreUltimoMomento == 0;
 	}
 
 	private boolean hasMomentoRegistradoComOMesmoHorario(Momento momento) {
@@ -52,5 +61,13 @@ public class RegistroDeTrabalho {
 		if (ultimoMomentoRegistrado == null) return false;
 		return ultimoMomentoRegistrado.getDataHora().isAfter(momento.getDataHora());
 	}
+
+	private Momento getUltimoMomentoRegistrado() {
+		if (momentosRegistrados.isEmpty()) return null;
+		int posicaoDoUltimoMomento = this.momentosRegistrados.size() - 1;
+		return this.momentosRegistrados
+			.stream()
+			.sorted(Comparator.comparing(momento -> momento.getDataHora()))
+			.collect(Collectors.toList()).get(posicaoDoUltimoMomento);
 	}
 }
