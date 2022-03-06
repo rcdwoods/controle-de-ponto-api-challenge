@@ -32,10 +32,27 @@ public class AlocacaoServiceImpl implements AlocacaoService {
 	private void validarAlocacao(Alocacao alocacao) throws NaoPossuiTempoDisponivelParaAlocacaoException, NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException {
 		if (!hasTempoTrabalhadoSuficiente(alocacao))
 			throw new NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException("Não é possível alocar um tempo maior que o tempo trabalhado no dia");
+		if (!hasHorasNaoAlocadasSuficiente(alocacao))
+			throw new NaoPossuiTempoDisponivelParaAlocacaoException("Não possui tempo disponível para alocação");
+	}
+
 	private boolean hasTempoTrabalhadoSuficiente(Alocacao alocacao) {
 		Duration horasTrabalhadas = obterHorasTrabalhadasNoDia(alocacao.getDia());
 		Duration horasParaAlocar = alocacao.getTempo();
 		return horasTrabalhadas.toMinutes() >= horasParaAlocar.toMinutes();
+	}
+
+	private boolean hasHorasNaoAlocadasSuficiente(Alocacao alocacao) {
+		List<Alocacao> alocacoesNoDia = obterAlocacoesNoDia(alocacao.getDia());
+		Duration horasTrabalhadasNoDia = obterHorasTrabalhadasNoDia(alocacao.getDia());
+		Duration horasAlocadasEmProjetos = alocacoesNoDia.stream().map(Alocacao::getTempo).reduce(Duration.ZERO, Duration::plus);
+		Duration horasDisponiveisParaAlocacao = horasTrabalhadasNoDia.minus(horasAlocadasEmProjetos);
+		Duration horasParaAlocar = alocacao.getTempo();
+		return horasDisponiveisParaAlocacao.toMinutes() >= horasParaAlocar.toMinutes();
+	}
+
+	private List<Alocacao> obterAlocacoesNoDia(LocalDate dia) {
+		return this.alocacaoRepository.findAllByDia(dia);
 	}
 
 	private Duration obterHorasTrabalhadasNoDia(LocalDate dia) {
