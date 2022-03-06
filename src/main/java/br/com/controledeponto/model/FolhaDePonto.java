@@ -17,11 +17,22 @@ public class FolhaDePonto {
 		this.registrosDeTrabalho = registrosDeTrabalho;
 		this.alocacoes = alocacoes;
 		calcularHorasTrabalhadas();
+		calcularHorasExcedentes();
 	Duration getHorasTrabalhadas() { return this.horasTrabalhadas; }
+
+	Duration getHorasExcedentes() { return this.horasExcedentes; }
+
 	private void calcularHorasTrabalhadas() {
 		this.horasTrabalhadas = this.registrosDeTrabalho
 			.stream()
 			.map(RegistroDeTrabalho::getHorasTrabalhadas)
+			.reduce(Duration.ZERO, Duration::plus);
+	}
+
+	private void calcularHorasExcedentes() {
+		this.horasExcedentes = this.registrosDeTrabalho
+			.stream()
+			.map(RegistroDeTrabalho::getHorasExcedentes)
 			.reduce(Duration.ZERO, Duration::plus);
 	}
 
