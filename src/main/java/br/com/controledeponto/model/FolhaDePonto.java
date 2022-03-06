@@ -16,5 +16,13 @@ public class FolhaDePonto {
 		this.mes = mes;
 		this.registrosDeTrabalho = registrosDeTrabalho;
 		this.alocacoes = alocacoes;
+		calcularHorasTrabalhadas();
+	Duration getHorasTrabalhadas() { return this.horasTrabalhadas; }
+	private void calcularHorasTrabalhadas() {
+		this.horasTrabalhadas = this.registrosDeTrabalho
+			.stream()
+			.map(RegistroDeTrabalho::getHorasTrabalhadas)
+			.reduce(Duration.ZERO, Duration::plus);
 	}
+
 }
