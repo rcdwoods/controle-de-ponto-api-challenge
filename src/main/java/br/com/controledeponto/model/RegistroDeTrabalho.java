@@ -23,6 +23,10 @@ public class RegistroDeTrabalho {
 		this.dia = dia;
 	}
 
+	Duration getHorasTrabalhadas() {
+		return getHorasDaPrimeiraEntradaESaida().plus(getHorasDaSegundaEntradaESaida());
+	}
+
 	List<Momento> getMomentosRegistrados() {
 		return this.momentosRegistrados;
 	}
