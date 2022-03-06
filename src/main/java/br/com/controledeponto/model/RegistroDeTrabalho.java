@@ -27,6 +27,11 @@ public class RegistroDeTrabalho {
 		return getHorasDaPrimeiraEntradaESaida().plus(getHorasDaSegundaEntradaESaida());
 	}
 
+	Duration getHorasExcedentes() {
+		if (getHorasTrabalhadas().toMinutes() <= 480) return Duration.ZERO;
+		return getHorasTrabalhadas().minusMinutes(480);
+	}
+
 	List<Momento> getMomentosRegistrados() {
 		return this.momentosRegistrados;
 	}
