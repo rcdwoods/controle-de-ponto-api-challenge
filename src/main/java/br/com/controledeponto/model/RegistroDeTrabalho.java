@@ -34,31 +34,31 @@ public class RegistroDeTrabalho {
 	private static final int JORNADA_DE_TRABALHO_EM_MINUTOS = 480;
 	private static final int LIMITE_DE_REGISTROS = 4;
 
-	RegistroDeTrabalho(LocalDate dia) {
+	public RegistroDeTrabalho(LocalDate dia) {
 		this.dia = dia;
 	}
 
 	public RegistroDeTrabalho() { }
 
-	Duration getHorasTrabalhadas() {
+	public Duration getHorasTrabalhadas() {
 		return getHorasDaPrimeiraEntradaESaida().plus(getHorasDaSegundaEntradaESaida());
 	}
 
-	Duration getHorasExcedentes() {
+	public Duration getHorasExcedentes() {
 		if (getHorasTrabalhadas().toMinutes() <= JORNADA_DE_TRABALHO_EM_MINUTOS) return Duration.ZERO;
 		return getHorasTrabalhadas().minusMinutes(JORNADA_DE_TRABALHO_EM_MINUTOS);
 	}
 
-	Duration getHorasDevidas() {
+	public Duration getHorasDevidas() {
 		if (getHorasTrabalhadas().toMinutes() >= JORNADA_DE_TRABALHO_EM_MINUTOS) return Duration.ZERO;
 		return Duration.ofMinutes(JORNADA_DE_TRABALHO_EM_MINUTOS).minus(getHorasTrabalhadas());
 	}
 
-	List<Momento> getMomentosRegistrados() {
+	public List<Momento> getMomentosRegistrados() {
 		return this.momentosRegistrados;
 	}
 
-	List<Momento> registrarMomento(Momento momento) throws HorarioInferiorAoUltimoRegistradoException, HorarioJaRegistradoException, NaoPodeHaverMaisDeQuatroRegistrosException, DeveHaverNoMinimoUmaHoraDeAlmocoException, NaoPodeRegistrarHorasEmFinalDeSemanaException {
+	public List<Momento> registrarMomento(Momento momento) throws HorarioInferiorAoUltimoRegistradoException, HorarioJaRegistradoException, NaoPodeHaverMaisDeQuatroRegistrosException, DeveHaverNoMinimoUmaHoraDeAlmocoException, NaoPodeRegistrarHorasEmFinalDeSemanaException {
 		validarRegistroDeMomento(momento);
 		this.momentosRegistrados.add(momento);
 		return this.momentosRegistrados;
