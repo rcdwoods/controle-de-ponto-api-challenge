@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  db:
+    platform: linux/x86_64
+    image: mysql:8.0
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=controle-de-ponto
+      - MYSQL_USER=controle-de-ponto
+      - MYSQL_PASSWORD=controle-de-ponto
+    ports:
+      - 3306:3306
