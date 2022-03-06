@@ -47,4 +47,28 @@ class RegistroDeTrabalhoServiceTest {
 		Optional<RegistroDeTrabalho> registroDeTrabalhoEncontrado = registroDeTrabalhoService.obterRegistroDeTrabalhoPorData(dataDoRegistro);
 		Assertions.assertThat(registroDeTrabalhoEncontrado).isPresent();
 	}
+
+	@Test
+	void deveAdicionarMomentoAoRegistroDeTrabalhoQuandoJaExistirRegistroNoDia() throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+		Momento momento = new Momento(LocalDateTime.parse("2021-01-01T08:00:00"));
+
+		Mockito.when(registroDeTrabalhoRepository.findByDia(LocalDate.parse("2021-01-01"))).thenReturn(Optional.of(new RegistroDeTrabalho()));
+
+		RegistroDeTrabalho registroComMomento = registroDeTrabalhoService.adicionarMomentoAoSeuRegistroDeTrabalho(momento);
+
+		Mockito.verify(registroDeTrabalhoRepository, Mockito.times(1)).save(Mockito.any());
+		Assertions.assertThat(registroComMomento.getMomentosRegistrados()).contains(momento);
+	}
+
+	@Test
+	void deveCriarRegistroDeTrabalhoEAdicionarMomentoQuandoNaoExistirRegistroNoDia() throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+		Momento momento = new Momento(LocalDateTime.parse("2021-01-01T08:00:00"));
+
+		Mockito.when(registroDeTrabalhoRepository.findByDia(LocalDate.parse("2021-01-01"))).thenReturn(Optional.empty());
+
+		RegistroDeTrabalho registroComMomento = registroDeTrabalhoService.adicionarMomentoAoSeuRegistroDeTrabalho(momento);
+
+		Mockito.verify(registroDeTrabalhoRepository, Mockito.times(2)).save(Mockito.any());
+		Assertions.assertThat(registroComMomento.getMomentosRegistrados()).contains(momento);
+	}
 }
