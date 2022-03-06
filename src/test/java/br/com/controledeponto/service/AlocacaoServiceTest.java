@@ -55,7 +55,20 @@ class AlocacaoServiceTest {
 		Alocacao alocacaoRealizada = alocacaoService.alocarHoras(alocacao);
 		Assertions.assertThat(alocacaoRealizada).isEqualTo(alocacao);
 	}
-	
+
+	@Test
+	void naoDeveAlocarHorasQuandoUsuarioNaoTiverTrabalhadoOSuficiente() throws NaoPossuiTempoDisponivelParaAlocacaoException, NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException, NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+		Alocacao alocacao = new Alocacao(LocalDate.parse("2021-01-01"), Duration.ofHours(9), "BMW");
+		RegistroDeTrabalho registroDeTrabalhoDoDia = criarRegistroDeTrabalhoCompleto();
+
+		Mockito.when(registroDeTrabalhoService.obterRegistroDeTrabalhoPorData(LocalDate.parse("2021-01-01"))).thenReturn(Optional.of(registroDeTrabalhoDoDia));
+
+		Exception exception = org.junit.jupiter.api.Assertions.assertThrows(NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException.class, () -> {
+			alocacaoService.alocarHoras(alocacao);
+		});
+		Assertions.assertThat(exception.getMessage()).isEqualTo("Não é possível alocar um tempo maior que o tempo trabalhado no dia");
+	}
+
 	private RegistroDeTrabalho criarRegistroDeTrabalhoCompleto() throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
 		RegistroDeTrabalho registroDeTrabalho = new RegistroDeTrabalho(LocalDate.parse("2021-01-01"));
 		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2021-01-01T08:00:00")));
