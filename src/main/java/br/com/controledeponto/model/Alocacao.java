@@ -27,4 +27,12 @@ public class Alocacao {
 	}
 
 	public Alocacao() { }
+
+	public LocalDate getDia() {
+		return dia;
+	}
+
+	public Duration getTempo() {
+		return tempo;
+	}
 }

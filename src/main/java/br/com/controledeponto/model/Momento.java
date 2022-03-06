@@ -24,9 +24,18 @@ public class Momento {
 		this.dataHora = dataHora;
 	}
 
-	public Momento() { }
+	public Momento() {
+	}
 
-	LocalDateTime getDataHora() {
+	public LocalDateTime getDataHora() {
 		return this.dataHora;
+	}
+
+	public RegistroDeTrabalho getRegistroDeTrabalho() {
+		return this.registroDeTrabalho;
+	}
+
+	public void setRegistroDeTrabalho(RegistroDeTrabalho registroDeTrabalho) {
+		this.registroDeTrabalho = registroDeTrabalho;
 	}
 }
