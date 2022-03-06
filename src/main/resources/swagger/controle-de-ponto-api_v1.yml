@@ -1,0 +1,58 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Controle de Ponto API
+basePath: /v1
+tags:
+  - name: alocacao
+schemes:
+  - http
+paths:
+  '/alocacoes':
+    post:
+      tags:
+        - alocacao
+      summary: Alocar horas trabalhadas
+      description: Alocar horas trabalhadas, de um dia de trabalho, em um projeto.
+      operationId: alocarHoras
+      parameters:
+        - in: body
+          name: alocacao
+          description: Alocacao
+          required: true
+          schema:
+            $ref: '#/definitions/Alocacao'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Horas alocadas ao projeto
+          schema:
+            $ref: '#/definitions/Alocacao'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Erro'
+          examples:
+            application/json: {'mensagem': 'Não pode alocar tempo maior que o tempo trabalhado no dia'}
+
+definitions:
+  Alocacao:
+    type: object
+    description: Alocacao
+    properties:
+      dia:
+        type: string
+        format: date
+      tempo:
+        type: string
+        example: PT2H30M0S
+      nomeProjeto:
+        type: string
+        example: ACME Corporation
+  Erro:
+    type: object
+    description: Mensagem de erro
+    properties:
+      mensagem:
+        type: string
