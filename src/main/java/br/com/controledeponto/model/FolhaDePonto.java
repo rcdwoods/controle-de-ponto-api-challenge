@@ -18,9 +18,14 @@ public class FolhaDePonto {
 		this.alocacoes = alocacoes;
 		calcularHorasTrabalhadas();
 		calcularHorasExcedentes();
+		calcularHorasDevidas();
+	}
+
 	Duration getHorasTrabalhadas() { return this.horasTrabalhadas; }
 
 	Duration getHorasExcedentes() { return this.horasExcedentes; }
+
+	Duration getHorasDevidas() { return this.horasDevidas; }
 
 	private void calcularHorasTrabalhadas() {
 		this.horasTrabalhadas = this.registrosDeTrabalho
@@ -36,4 +41,10 @@ public class FolhaDePonto {
 			.reduce(Duration.ZERO, Duration::plus);
 	}
 
+	private void calcularHorasDevidas() {
+		this.horasDevidas = this.registrosDeTrabalho
+			.stream()
+			.map(RegistroDeTrabalho::getHorasDevidas)
+			.reduce(Duration.ZERO, Duration::plus);
+	}
 }
