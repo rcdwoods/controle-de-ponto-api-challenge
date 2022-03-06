@@ -7,6 +7,12 @@ import br.com.controledeponto.exception.HorarioJaRegistradoException;
 import br.com.controledeponto.exception.NaoPodeHaverMaisDeQuatroRegistrosException;
 import br.com.controledeponto.exception.NaoPodeRegistrarHorasEmFinalDeSemanaException;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -16,8 +22,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Entity
 public class RegistroDeTrabalho {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column(name = "dia")
 	private LocalDate dia;
+	@OneToMany(mappedBy = "registroDeTrabalho")
 	private List<Momento> momentosRegistrados = new ArrayList<>();
 	private static final int JORNADA_DE_TRABALHO_EM_MINUTOS = 480;
 	private static final int LIMITE_DE_REGISTROS = 4;
@@ -25,6 +37,8 @@ public class RegistroDeTrabalho {
 	RegistroDeTrabalho(LocalDate dia) {
 		this.dia = dia;
 	}
+
+	public RegistroDeTrabalho() { }
 
 	Duration getHorasTrabalhadas() {
 		return getHorasDaPrimeiraEntradaESaida().plus(getHorasDaSegundaEntradaESaida());
@@ -107,7 +121,7 @@ public class RegistroDeTrabalho {
 		int posicaoDoUltimoMomento = this.momentosRegistrados.size() - NumberConstant.ONE;
 		return this.momentosRegistrados
 			.stream()
-			.sorted(Comparator.comparing(momento -> momento.getDataHora()))
+			.sorted(Comparator.comparing(Momento::getDataHora))
 			.collect(Collectors.toList()).get(posicaoDoUltimoMomento);
 	}
 }
