@@ -28,7 +28,15 @@ public class RegistroDeTrabalho {
 	}
 
 	List<Momento> registrarMomento(Momento momento) throws HorarioInferiorAoUltimoRegistradoException, HorarioJaRegistradoException, NaoPodeHaverMaisDeQuatroRegistrosException, DeveHaverNoMinimoUmaHoraDeAlmocoException, NaoPodeRegistrarHorasEmFinalDeSemanaException {
+		validarRegistroDeMomento(momento);
 		this.momentosRegistrados.add(momento);
 		return this.momentosRegistrados;
+	}
+	private void validarRegistroDeMomento(Momento momento) throws HorarioInferiorAoUltimoRegistradoException, HorarioJaRegistradoException, NaoPodeHaverMaisDeQuatroRegistrosException, DeveHaverNoMinimoUmaHoraDeAlmocoException, NaoPodeRegistrarHorasEmFinalDeSemanaException {
+		if (hasMomentoRegistradoComHorarioSuperior(momento))
+			throw new HorarioInferiorAoUltimoRegistradoException("Horário inferior ao último registrado.");
+	}
+	}
+	}
 	}
 }
