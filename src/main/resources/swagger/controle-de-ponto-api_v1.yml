@@ -5,9 +5,50 @@ info:
 basePath: /v1
 tags:
   - name: alocacao
+  - name: batida
+  - name: folha-de-ponto
 schemes:
   - http
 paths:
+  '/batidas':
+    post:
+      tags:
+        - batida
+      summary: Bater ponto
+      description: Registrar um horário da jornada diária de trabalho.
+      operationId: baterPonto
+      parameters:
+        - in: body
+          name: momento
+          description: Momento
+          required: true
+          schema:
+            $ref: '#/definitions/Momento'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/Momento'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Erro'
+          examples:
+            application/json: { 'mensagem': 'Data e hora em formato inválido' }
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Erro'
+          examples:
+            application/json: { 'mensagem': 'Apenas 4 horários podem ser registrados por dia' }
+        '409':
+          description: Conflict
+          schema:
+            $ref: '#/definitions/Erro'
+          examples:
+            application/json: { 'mensagem': 'Horários já registrado' }
   '/alocacoes':
     post:
       tags:
@@ -35,6 +76,32 @@ paths:
             $ref: '#/definitions/Erro'
           examples:
             application/json: {'mensagem': 'Não pode alocar tempo maior que o tempo trabalhado no dia'}
+  '/folhas-de-ponto/{mes}':
+    post:
+      tags:
+        - folha-de-ponto
+      summary: Relatório mensal
+      description: Gerar relatório mensal da folha de ponto.
+      operationId: gerarFolhaDePonto
+      parameters:
+        - in: path
+          name: mes
+          description: Mês da folha de ponto
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Horas alocadas ao projeto
+          schema:
+            $ref: '#/definitions/Relatorio'
+        '404':
+          description: Relatório não encontrado
+          schema:
+            $ref: '#/definitions/Erro'
+          examples:
+            application/json: { 'mensagem': 'Não há registros de trabalho nesse mês para gerar um relatório.' }
 
 definitions:
   Alocacao:
@@ -58,6 +125,49 @@ definitions:
         description: Data e hora da batida
         type: string
         example: "2018-08-22T08:00:00"
+  MomentoEmHora:
+    type: object
+    description: Hora da batida do ponto
+    properties:
+      hora:
+        description: Hora da batida do ponto
+        type: string
+        example: "08:00:00"
+  RegistroDeTrabalho:
+    type: object
+    description: Registro de trabalho de determinado dia
+    properties:
+      dia:
+        type: string
+        format: date
+      horarios:
+        type: array
+        items:
+          $ref: "#/definitions/MomentoEmHora"
+  Relatorio:
+    type: object
+    description: Relatório da folha de ponto mensal
+    properties:
+      mes:
+        type: string
+        example: "2022-01"
+      horasTrabalhadas:
+        type: string
+        example: "PT69H35M5S"
+      horasExcedentes:
+        type: string
+        example: "PT25M5S"
+      horasDevidas:
+        type: string
+        example: "PT0S"
+      registros:
+        type: array
+        items:
+          $ref: "#/definitions/Alocacao"
+      alocacoes:
+        type: array
+        items:
+          $ref: "#/definitions/Alocacao"
   Erro:
     type: object
     description: Mensagem de erro
