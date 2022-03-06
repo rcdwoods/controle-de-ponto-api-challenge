@@ -25,6 +25,21 @@ public class AlocacaoServiceImpl implements AlocacaoService {
 
 	@Override
 	public Alocacao alocarHoras(Alocacao alocacao) throws NaoPossuiTempoDisponivelParaAlocacaoException, NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException {
+		validarAlocacao(alocacao);
 		return alocacaoRepository.save(alocacao);
+	}
+
+	private void validarAlocacao(Alocacao alocacao) throws NaoPossuiTempoDisponivelParaAlocacaoException, NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException {
+		if (!hasTempoTrabalhadoSuficiente(alocacao))
+			throw new NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException("Não é possível alocar um tempo maior que o tempo trabalhado no dia");
+	private boolean hasTempoTrabalhadoSuficiente(Alocacao alocacao) {
+		Duration horasTrabalhadas = obterHorasTrabalhadasNoDia(alocacao.getDia());
+		Duration horasParaAlocar = alocacao.getTempo();
+		return horasTrabalhadas.toMinutes() >= horasParaAlocar.toMinutes();
+	}
+
+	private Duration obterHorasTrabalhadasNoDia(LocalDate dia) {
+		Optional<RegistroDeTrabalho> registroDeTrabalhoNoDia = registroDeTrabalhoService.obterRegistroDeTrabalhoPorData(dia);
+		return registroDeTrabalhoNoDia.isEmpty() ? Duration.ZERO : registroDeTrabalhoNoDia.get().getHorasTrabalhadas();
 	}
 }
