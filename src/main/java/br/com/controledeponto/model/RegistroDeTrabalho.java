@@ -35,8 +35,20 @@ public class RegistroDeTrabalho {
 	private void validarRegistroDeMomento(Momento momento) throws HorarioInferiorAoUltimoRegistradoException, HorarioJaRegistradoException, NaoPodeHaverMaisDeQuatroRegistrosException, DeveHaverNoMinimoUmaHoraDeAlmocoException, NaoPodeRegistrarHorasEmFinalDeSemanaException {
 		if (hasMomentoRegistradoComHorarioSuperior(momento))
 			throw new HorarioInferiorAoUltimoRegistradoException("Horário inferior ao último registrado.");
+		if (hasMomentoRegistradoComOMesmoHorario(momento))
+			throw new HorarioJaRegistradoException("Horários já registrado");
 	}
+
+	private boolean hasMomentoRegistradoComOMesmoHorario(Momento momento) {
+		return this.momentosRegistrados
+			.stream()
+			.anyMatch(momentoRegistrado -> momentoRegistrado.getDataHora().isEqual(momento.getDataHora()));
 	}
+
+	private boolean hasMomentoRegistradoComHorarioSuperior(Momento momento) {
+		Momento ultimoMomentoRegistrado = getUltimoMomentoRegistrado();
+		if (ultimoMomentoRegistrado == null) return false;
+		return ultimoMomentoRegistrado.getDataHora().isAfter(momento.getDataHora());
 	}
 	}
 }
