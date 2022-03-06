@@ -25,4 +25,19 @@ public class RegistroDeTrabalhoServiceImpl implements RegistroDeTrabalhoService 
 	public Optional<RegistroDeTrabalho> obterRegistroDeTrabalhoPorData(LocalDate data) {
 		return registroDeTrabalhoRepository.findByDia(data);
 	}
+
+	@Override
+	public RegistroDeTrabalho adicionarMomentoAoSeuRegistroDeTrabalho(Momento momento) throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+		Optional<RegistroDeTrabalho> registroDeTrabalhoNoDia = obterRegistroDeTrabalhoPorData(momento.getDataHora().toLocalDate());
+
+		if (registroDeTrabalhoNoDia.isEmpty())
+			registroDeTrabalhoNoDia = Optional.of(criarRegistroDeTrabalho(new RegistroDeTrabalho(momento.getDataHora().toLocalDate())));
+
+		registroDeTrabalhoNoDia.get().registrarMomento(momento);
+		return registroDeTrabalhoRepository.save(registroDeTrabalhoNoDia.get());
+	}
+
+	private RegistroDeTrabalho criarRegistroDeTrabalho(RegistroDeTrabalho registroDeTrabalho) {
+		return this.registroDeTrabalhoRepository.save(registroDeTrabalho);
+	}
 }
