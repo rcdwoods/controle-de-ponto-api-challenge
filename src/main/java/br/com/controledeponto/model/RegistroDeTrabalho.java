@@ -37,6 +37,8 @@ public class RegistroDeTrabalho {
 			throw new HorarioInferiorAoUltimoRegistradoException("Horário inferior ao último registrado.");
 		if (hasMomentoRegistradoComOMesmoHorario(momento))
 			throw new HorarioJaRegistradoException("Horários já registrado");
+		if (this.momentosRegistrados.size() == 4)
+			throw new NaoPodeHaverMaisDeQuatroRegistrosException("Apenas 4 horários podem ser registrados por dia");
 	}
 
 	private boolean hasMomentoRegistradoComOMesmoHorario(Momento momento) {
