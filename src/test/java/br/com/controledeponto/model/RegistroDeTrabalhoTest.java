@@ -1,5 +1,18 @@
 package br.com.controledeponto.model;
 
+import br.com.controledeponto.exception.DeveHaverNoMinimoUmaHoraDeAlmocoException;
+import br.com.controledeponto.exception.HorarioInferiorAoUltimoRegistradoException;
+import br.com.controledeponto.exception.HorarioJaRegistradoException;
+import br.com.controledeponto.exception.NaoPodeHaverMaisDeQuatroRegistrosException;
+import br.com.controledeponto.exception.NaoPodeRegistrarHorasEmFinalDeSemanaException;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 class RegistroDeTrabalhoTest {
 
 	@Test
@@ -144,4 +157,36 @@ class RegistroDeTrabalhoTest {
 		Assertions.assertThat(registroDeTrabalho.getHorasExcedentes().toMinutes()).isEqualTo(1);
 	}
 
+	@Test
+	void naoDeveGerarHorasDevidasQuandoFuncionarioTrabalharOitoHoras() throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+		RegistroDeTrabalho registroDeTrabalho = new RegistroDeTrabalho(LocalDate.parse("2022-12-01"));
+		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T09:00:00")));
+		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T12:00:00")));
+		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T13:00:00")));
+		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T18:00:00")));
+
+		Assertions.assertThat(registroDeTrabalho.getHorasDevidas().toHours()).isEqualTo(0);
+	}
+
+	@Test
+	void naoDeveGerarHorasDevidasQuandoFuncionarioTrabalharMaisDoQueOitoHoras() throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+		RegistroDeTrabalho registroDeTrabalho = new RegistroDeTrabalho(LocalDate.parse("2022-12-01"));
+		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T09:00:00")));
+		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T12:00:00")));
+		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T13:00:00")));
+		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T18:01:00")));
+
+		Assertions.assertThat(registroDeTrabalho.getHorasDevidas().toHours()).isEqualTo(0);
+	}
+
+	@Test
+	void deveGerarHorasDevidasQuandoFuncionarioTrabalharMenosDoQueOitoHoras() throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+		RegistroDeTrabalho registroDeTrabalho = new RegistroDeTrabalho(LocalDate.parse("2022-12-01"));
+		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T09:00:00")));
+		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T12:00:00")));
+		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T13:00:00")));
+		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T16:59:00")));
+
+		Assertions.assertThat(registroDeTrabalho.getHorasDevidas().toMinutes()).isEqualTo(61);
+	}
 }
