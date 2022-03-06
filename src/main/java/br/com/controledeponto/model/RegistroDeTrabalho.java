@@ -32,6 +32,21 @@ public class RegistroDeTrabalho {
 		this.momentosRegistrados.add(momento);
 		return this.momentosRegistrados;
 	}
+
+	private Duration getHorasDaPrimeiraEntradaESaida() {
+		if (momentosRegistrados.size() < 2) return Duration.ZERO;
+		LocalDateTime primeiraEntrada = momentosRegistrados.get(0).getDataHora();
+		LocalDateTime primeiraSaida = momentosRegistrados.get(1).getDataHora();
+		return Duration.between(primeiraEntrada, primeiraSaida);
+	}
+
+	private Duration getHorasDaSegundaEntradaESaida() {
+		if (momentosRegistrados.size() < 4) return Duration.ZERO;
+		LocalDateTime primeiraEntrada = momentosRegistrados.get(2).getDataHora();
+		LocalDateTime primeiraSaida = momentosRegistrados.get(3).getDataHora();
+		return Duration.between(primeiraEntrada, primeiraSaida);
+	}
+
 	private void validarRegistroDeMomento(Momento momento) throws HorarioInferiorAoUltimoRegistradoException, HorarioJaRegistradoException, NaoPodeHaverMaisDeQuatroRegistrosException, DeveHaverNoMinimoUmaHoraDeAlmocoException, NaoPodeRegistrarHorasEmFinalDeSemanaException {
 		if (hasMomentoRegistradoComHorarioSuperior(momento))
 			throw new HorarioInferiorAoUltimoRegistradoException("Horário inferior ao último registrado.");
