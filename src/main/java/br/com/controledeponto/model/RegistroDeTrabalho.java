@@ -41,6 +41,14 @@ public class RegistroDeTrabalho {
 			throw new NaoPodeHaverMaisDeQuatroRegistrosException("Apenas 4 horários podem ser registrados por dia");
 		if (hasMenosHorasDeAlmocoDoQueOMinimo(momento))
 			throw new DeveHaverNoMinimoUmaHoraDeAlmocoException("Deve haver no mínimo 1 hora de almoço");
+		if (isMomentoEmUmFinalDeSemana(momento))
+			throw new NaoPodeRegistrarHorasEmFinalDeSemanaException("Sábado e domingo não são permitidos como dia de trabalho");
+	}
+
+	private boolean isMomentoEmUmFinalDeSemana(Momento momento) {
+		DayOfWeek diaDoMomento = momento.getDataHora().getDayOfWeek();
+		return diaDoMomento == DayOfWeek.SATURDAY || diaDoMomento == DayOfWeek.SUNDAY;
+	}
 
 	private boolean hasMenosHorasDeAlmocoDoQueOMinimo(Momento momento) {
 		if (this.momentosRegistrados.size() != 2) return false;
