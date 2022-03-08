@@ -9,6 +9,8 @@ plugins {
 
 apply from: 'plugins/swagger.gradle'
 
+apply plugin: 'checkstyle'
+
 group = 'br.com.controle-de-ponto'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
@@ -56,6 +58,20 @@ dependencies {
 		artifact -> implementation "io.springfox:$artifact:$springFoxVersion"
 	}
 }
+
+checkstyle {
+	toolVersion "$checkstyleVersion"
+	configFile file("configs/checkstyle.xml")
+}
+
+checkstyleMain {
+	source = 'src/main/java'
+}
+
+checkstyleTest {
+	source = 'src/main/test'
+}
+
 
 tasks.named('test') {
 	useJUnitPlatform()
