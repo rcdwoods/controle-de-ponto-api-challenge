@@ -24,12 +24,18 @@ public class AlocacaoServiceImpl implements AlocacaoService {
 	}
 
 	@Override
-	public Alocacao alocarHoras(Alocacao alocacao) throws NaoPossuiTempoDisponivelParaAlocacaoException, NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException {
+	public Alocacao alocarHoras(Alocacao alocacao) throws
+		NaoPossuiTempoDisponivelParaAlocacaoException,
+		NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException
+	{
 		validarAlocacao(alocacao);
 		return alocacaoRepository.save(alocacao);
 	}
 
-	private void validarAlocacao(Alocacao alocacao) throws NaoPossuiTempoDisponivelParaAlocacaoException, NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException {
+	private void validarAlocacao(Alocacao alocacao) throws
+		NaoPossuiTempoDisponivelParaAlocacaoException,
+		NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException
+	{
 		if (!hasTempoTrabalhadoSuficiente(alocacao))
 			throw new NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException("Não é possível alocar um tempo maior que o tempo trabalhado no dia");
 		if (!hasHorasNaoAlocadasSuficiente(alocacao))

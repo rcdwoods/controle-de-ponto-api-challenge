@@ -21,11 +21,17 @@ public class FolhaDePonto {
 		calcularHorasDevidas();
 	}
 
-	Duration getHorasTrabalhadas() { return this.horasTrabalhadas; }
+	Duration getHorasTrabalhadas() {
+		return this.horasTrabalhadas;
+	}
 
-	Duration getHorasExcedentes() { return this.horasExcedentes; }
+	Duration getHorasExcedentes() {
+		return this.horasExcedentes;
+	}
 
-	Duration getHorasDevidas() { return this.horasDevidas; }
+	Duration getHorasDevidas() {
+		return this.horasDevidas;
+	}
 
 	private void calcularHorasTrabalhadas() {
 		this.horasTrabalhadas = this.registrosDeTrabalho

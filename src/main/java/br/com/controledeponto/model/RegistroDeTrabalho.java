@@ -58,7 +58,13 @@ public class RegistroDeTrabalho {
 		return this.momentosRegistrados;
 	}
 
-	public List<Momento> registrarMomento(Momento momento) throws HorarioInferiorAoUltimoRegistradoException, HorarioJaRegistradoException, NaoPodeHaverMaisDeQuatroRegistrosException, DeveHaverNoMinimoUmaHoraDeAlmocoException, NaoPodeRegistrarHorasEmFinalDeSemanaException {
+	public List<Momento> registrarMomento(Momento momento) throws
+		HorarioInferiorAoUltimoRegistradoException,
+		HorarioJaRegistradoException,
+		NaoPodeHaverMaisDeQuatroRegistrosException,
+		DeveHaverNoMinimoUmaHoraDeAlmocoException,
+		NaoPodeRegistrarHorasEmFinalDeSemanaException
+	{
 		validarRegistroDeMomento(momento);
 		this.momentosRegistrados.add(momento);
 		return this.momentosRegistrados;
@@ -78,7 +84,13 @@ public class RegistroDeTrabalho {
 		return Duration.between(primeiraEntrada, primeiraSaida);
 	}
 
-	private void validarRegistroDeMomento(Momento momento) throws HorarioInferiorAoUltimoRegistradoException, HorarioJaRegistradoException, NaoPodeHaverMaisDeQuatroRegistrosException, DeveHaverNoMinimoUmaHoraDeAlmocoException, NaoPodeRegistrarHorasEmFinalDeSemanaException {
+	private void validarRegistroDeMomento(Momento momento) throws
+		HorarioInferiorAoUltimoRegistradoException,
+		HorarioJaRegistradoException,
+		NaoPodeHaverMaisDeQuatroRegistrosException,
+		DeveHaverNoMinimoUmaHoraDeAlmocoException,
+		NaoPodeRegistrarHorasEmFinalDeSemanaException
+	{
 		if (hasMomentoRegistradoComHorarioSuperior(momento))
 			throw new HorarioInferiorAoUltimoRegistradoException("Horário inferior ao último registrado.");
 		if (hasMomentoRegistradoComOMesmoHorario(momento))

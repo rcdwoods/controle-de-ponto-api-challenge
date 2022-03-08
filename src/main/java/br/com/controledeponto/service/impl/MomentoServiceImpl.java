@@ -22,7 +22,13 @@ public class MomentoServiceImpl implements MomentoService {
 	}
 
 	@Override
-	public Momento salvarMomento(Momento momento) throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+	public Momento salvarMomento(Momento momento) throws
+		NaoPodeHaverMaisDeQuatroRegistrosException,
+		NaoPodeRegistrarHorasEmFinalDeSemanaException,
+		HorarioInferiorAoUltimoRegistradoException,
+		DeveHaverNoMinimoUmaHoraDeAlmocoException,
+		HorarioJaRegistradoException
+	{
 		RegistroDeTrabalho registroDeTrabalhoDoMomento = registroDeTrabalhoService.adicionarMomentoAoSeuRegistroDeTrabalho(momento);
 		momento.setRegistroDeTrabalho(registroDeTrabalhoDoMomento);
 		return momentoRepository.save(momento);
