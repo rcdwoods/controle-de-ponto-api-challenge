@@ -1,0 +1,4 @@
+detekt {
+    version = '1.19.0'
+    config = files("$projectDir/configs/detekt.yml")
+}

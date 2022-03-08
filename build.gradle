@@ -3,11 +3,13 @@ plugins {
 	id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
 	id "org.hidetake.swagger.generator" version "$swaggerGeneratorVersion" apply false
 	id "org.sonarqube" version "$sonarVersion"
-	id 'java'
+	id "io.gitlab.arturbosch.detekt" version "$detektVersion"
 	id 'jacoco'
+	id 'java'
 }
 
 apply from: 'plugins/swagger.gradle'
+apply from: 'plugins/detekt.gradle'
 
 apply plugin: 'checkstyle'
 
