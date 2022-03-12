@@ -7,12 +7,14 @@ import br.com.controledeponto.model.RegistroDeTrabalho;
 import br.com.controledeponto.repository.AlocacaoRepository;
 import br.com.controledeponto.service.AlocacaoService;
 import br.com.controledeponto.service.RegistroDeTrabalhoService;
+import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class AlocacaoServiceImpl implements AlocacaoService {
 
 	private AlocacaoRepository alocacaoRepository;
@@ -31,7 +33,7 @@ public class AlocacaoServiceImpl implements AlocacaoService {
 
 	private void validarAlocacao(Alocacao alocacao) {
 		if (!hasTempoTrabalhadoSuficiente(alocacao))
-			throw new NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException("Não é possível alocar um tempo maior que o tempo trabalhado no dia");
+			throw new NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException("Não pode alocar tempo maior que o tempo trabalhado no dia");
 		if (!hasHorasNaoAlocadasSuficiente(alocacao))
 			throw new NaoPossuiTempoDisponivelParaAlocacaoException("Não possui tempo disponível para alocação");
 	}
@@ -39,7 +41,7 @@ public class AlocacaoServiceImpl implements AlocacaoService {
 	private boolean hasTempoTrabalhadoSuficiente(Alocacao alocacao) {
 		Duration horasTrabalhadas = obterHorasTrabalhadasNoDia(alocacao.getDia());
 		Duration horasParaAlocar = alocacao.getTempo();
-		return horasTrabalhadas.toMinutes() >= horasParaAlocar.toMinutes();
+		return horasTrabalhadas.toSeconds() >= horasParaAlocar.toSeconds();
 	}
 
 	private boolean hasHorasNaoAlocadasSuficiente(Alocacao alocacao) {
@@ -48,7 +50,7 @@ public class AlocacaoServiceImpl implements AlocacaoService {
 		Duration horasAlocadasEmProjetos = alocacoesNoDia.stream().map(Alocacao::getTempo).reduce(Duration.ZERO, Duration::plus);
 		Duration horasDisponiveisParaAlocacao = horasTrabalhadasNoDia.minus(horasAlocadasEmProjetos);
 		Duration horasParaAlocar = alocacao.getTempo();
-		return horasDisponiveisParaAlocacao.toMinutes() >= horasParaAlocar.toMinutes();
+		return horasDisponiveisParaAlocacao.toSeconds() >= horasParaAlocar.toSeconds();
 	}
 
 	private List<Alocacao> obterAlocacoesNoDia(LocalDate dia) {

@@ -66,7 +66,7 @@ class AlocacaoServiceTest {
 		Exception exception = org.junit.jupiter.api.Assertions.assertThrows(NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException.class, () -> {
 			alocacaoService.alocarHoras(alocacao);
 		});
-		Assertions.assertThat(exception.getMessage()).isEqualTo("Não é possível alocar um tempo maior que o tempo trabalhado no dia");
+		Assertions.assertThat(exception.getMessage()).isEqualTo("Não pode alocar tempo maior que o tempo trabalhado no dia");
 	}
 
 	private RegistroDeTrabalho criarRegistroDeTrabalhoCompleto() throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {

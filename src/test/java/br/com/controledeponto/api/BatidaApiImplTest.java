@@ -1,6 +1,7 @@
 package br.com.controledeponto.api;
 
 import br.com.controledeponto.model.RegistroDeTrabalho;
+import br.com.controledeponto.repository.AlocacaoRepository;
 import br.com.controledeponto.repository.MomentoRepository;
 import br.com.controledeponto.repository.RegistroDeTrabalhoRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,6 +23,7 @@ import org.mockito.internal.hamcrest.HamcrestArgumentMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,7 +40,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, properties = "local.server.port=8080")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 class BatidaApiImplTest {
 
@@ -48,14 +50,21 @@ class BatidaApiImplTest {
 	@MockBean
 	private RegistroDeTrabalhoRepository registroDeTrabalhoRepository;
 
+	@MockBean
+	private AlocacaoRepository alocacaoRepository;
+
 	@Captor
 	private ArgumentCaptor<br.com.controledeponto.model.Momento> momentoCaptor;
 
-	private String batidasApi = "http://localhost:8080/controle-de-ponto/v1/batidas";
+	@LocalServerPort
+	int randomServerPort;
+
+	private String batidasApi;
 
 	@BeforeEach
 	void setup() {
-		RestAssured.port = 8080;
+		RestAssured.port = randomServerPort;
+		this.batidasApi = "http://localhost:" + randomServerPort + "/controle-de-ponto/v1/batidas";
 		Mockito.when(momentoRepository.save(Mockito.any())).thenAnswer(it -> it.getArgument(0));
 		Mockito.when(registroDeTrabalhoRepository.save(Mockito.any())).thenAnswer(it -> it.getArgument(0));
 	}
