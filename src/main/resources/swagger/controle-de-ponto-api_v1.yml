@@ -146,10 +146,8 @@ definitions:
       dia:
         type: string
         format: date
-      horarios:
-        type: array
-        items:
-          $ref: "#/definitions/MomentoEmHora"
+      tempo:
+        type: string
   Relatorio:
     type: object
     description: Relatório da folha de ponto mensal
@@ -169,7 +167,7 @@ definitions:
       registros:
         type: array
         items:
-          $ref: "#/definitions/Alocacao"
+          $ref: "#/definitions/RegistroDeTrabalho"
       alocacoes:
         type: array
         items:
