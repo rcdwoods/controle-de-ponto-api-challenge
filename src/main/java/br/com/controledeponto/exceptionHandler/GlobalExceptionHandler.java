@@ -4,6 +4,7 @@ import br.com.controledeponto.exception.DeveHaverNoMinimoUmaHoraDeAlmocoExceptio
 import br.com.controledeponto.exception.HorarioInferiorAoUltimoRegistradoException;
 import br.com.controledeponto.exception.HorarioJaRegistradoException;
 import br.com.controledeponto.exception.NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException;
+import br.com.controledeponto.exception.NaoHaRegistrosDeTrabalhoNoMesException;
 import br.com.controledeponto.exception.NaoPodeHaverMaisDeQuatroRegistrosException;
 import br.com.controledeponto.exception.NaoPodeRegistrarHorasEmFinalDeSemanaException;
 import br.com.controledeponto.exception.NaoPossuiTempoDisponivelParaAlocacaoException;
@@ -65,5 +66,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler({ NaoPossuiTempoDisponivelParaAlocacaoException.class })
 	public ResponseEntity<Object> handleNaoPossuiTempoDisponivelParaAlocacaoException(NaoPossuiTempoDisponivelParaAlocacaoException ex, WebRequest request) {
 		return handleExceptionInternal(ex, new Erro(ex.getMessage()), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+	}
+
+	@ExceptionHandler({ NaoHaRegistrosDeTrabalhoNoMesException.class })
+	public ResponseEntity<Object> handleNaoHaRegistrosDeTrabalhoNoMesException(NaoHaRegistrosDeTrabalhoNoMesException ex, WebRequest request) {
+		return handleExceptionInternal(ex, new Erro(ex.getMessage()), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 }
