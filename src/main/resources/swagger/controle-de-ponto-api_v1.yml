@@ -107,6 +107,10 @@ definitions:
   Alocacao:
     type: object
     description: Alocacao
+    required:
+      - dia
+      - tempo
+      - nomeProjeto
     properties:
       dia:
         type: string
@@ -120,6 +124,8 @@ definitions:
   Momento:
     type: object
     description: Momento da batida de ponto
+    required:
+      - dataHora
     properties:
       dataHora:
         description: Data e hora da batida
