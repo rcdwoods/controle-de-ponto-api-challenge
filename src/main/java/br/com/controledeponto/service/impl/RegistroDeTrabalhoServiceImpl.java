@@ -7,6 +7,8 @@ import br.com.controledeponto.service.RegistroDeTrabalhoService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +23,11 @@ public class RegistroDeTrabalhoServiceImpl implements RegistroDeTrabalhoService 
 	@Override
 	public Optional<RegistroDeTrabalho> obterRegistroDeTrabalhoPorData(LocalDate data) {
 		return registroDeTrabalhoRepository.findByDia(data);
+	}
+
+	@Override
+	public List<RegistroDeTrabalho> obterRegistrosDeTrabalhoPorMes(YearMonth mes) {
+		return registroDeTrabalhoRepository.findAllByDiaContaining(mes.toString());
 	}
 
 	@Override
