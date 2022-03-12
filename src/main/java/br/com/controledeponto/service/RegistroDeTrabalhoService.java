@@ -15,10 +15,5 @@ import java.util.Optional;
 @Service
 public interface RegistroDeTrabalhoService {
 	Optional<RegistroDeTrabalho> obterRegistroDeTrabalhoPorData(LocalDate data);
-	RegistroDeTrabalho adicionarMomentoAoSeuRegistroDeTrabalho(Momento momento) throws
-		NaoPodeHaverMaisDeQuatroRegistrosException,
-		NaoPodeRegistrarHorasEmFinalDeSemanaException,
-		HorarioInferiorAoUltimoRegistradoException,
-		DeveHaverNoMinimoUmaHoraDeAlmocoException,
-		HorarioJaRegistradoException;
+	RegistroDeTrabalho adicionarMomentoAoSeuRegistroDeTrabalho(Momento momento);
 }

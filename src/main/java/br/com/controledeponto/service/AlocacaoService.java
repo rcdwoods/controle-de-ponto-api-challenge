@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface AlocacaoService {
-	Alocacao alocarHoras(Alocacao alocacao) throws NaoPossuiTempoDisponivelParaAlocacaoException, NaoEPossivelAlocarMaisHorasDoQueTrabalhadoException;
+	Alocacao alocarHoras(Alocacao alocacao);
 }

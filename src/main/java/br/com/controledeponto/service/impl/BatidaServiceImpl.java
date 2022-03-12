@@ -1,10 +1,5 @@
 package br.com.controledeponto.service.impl;
 
-import br.com.controledeponto.exception.DeveHaverNoMinimoUmaHoraDeAlmocoException;
-import br.com.controledeponto.exception.HorarioInferiorAoUltimoRegistradoException;
-import br.com.controledeponto.exception.HorarioJaRegistradoException;
-import br.com.controledeponto.exception.NaoPodeHaverMaisDeQuatroRegistrosException;
-import br.com.controledeponto.exception.NaoPodeRegistrarHorasEmFinalDeSemanaException;
 import br.com.controledeponto.model.Momento;
 import br.com.controledeponto.model.RegistroDeTrabalho;
 import br.com.controledeponto.repository.MomentoRepository;
@@ -22,13 +17,7 @@ public class BatidaServiceImpl implements BatidaService {
 	}
 
 	@Override
-	public Momento salvarMomento(Momento momento) throws
-		NaoPodeHaverMaisDeQuatroRegistrosException,
-		NaoPodeRegistrarHorasEmFinalDeSemanaException,
-		HorarioInferiorAoUltimoRegistradoException,
-		DeveHaverNoMinimoUmaHoraDeAlmocoException,
-		HorarioJaRegistradoException
-	{
+	public Momento salvarMomento(Momento momento) {
 		RegistroDeTrabalho registroDeTrabalhoDoMomento = registroDeTrabalhoService.adicionarMomentoAoSeuRegistroDeTrabalho(momento);
 		momento.setRegistroDeTrabalho(registroDeTrabalhoDoMomento);
 		return momentoRepository.save(momento);

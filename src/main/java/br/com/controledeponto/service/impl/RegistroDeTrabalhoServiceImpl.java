@@ -27,13 +27,7 @@ public class RegistroDeTrabalhoServiceImpl implements RegistroDeTrabalhoService 
 	}
 
 	@Override
-	public RegistroDeTrabalho adicionarMomentoAoSeuRegistroDeTrabalho(Momento momento) throws
-		NaoPodeHaverMaisDeQuatroRegistrosException,
-		NaoPodeRegistrarHorasEmFinalDeSemanaException,
-		HorarioInferiorAoUltimoRegistradoException,
-		DeveHaverNoMinimoUmaHoraDeAlmocoException,
-		HorarioJaRegistradoException
-	{
+	public RegistroDeTrabalho adicionarMomentoAoSeuRegistroDeTrabalho(Momento momento) {
 		Optional<RegistroDeTrabalho> registroDeTrabalhoNoDia = obterRegistroDeTrabalhoPorData(momento.getDataHora().toLocalDate());
 
 		if (registroDeTrabalhoNoDia.isEmpty())

@@ -10,10 +10,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface BatidaService {
-	Momento salvarMomento(Momento momento) throws
-		NaoPodeHaverMaisDeQuatroRegistrosException,
-		NaoPodeRegistrarHorasEmFinalDeSemanaException,
-		HorarioInferiorAoUltimoRegistradoException,
-		DeveHaverNoMinimoUmaHoraDeAlmocoException,
-		HorarioJaRegistradoException;
+	Momento salvarMomento(Momento momento);
 }
