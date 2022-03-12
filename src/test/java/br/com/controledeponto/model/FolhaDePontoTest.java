@@ -1,10 +1,5 @@
 package br.com.controledeponto.model;
 
-import br.com.controledeponto.exception.DeveHaverNoMinimoUmaHoraDeAlmocoException;
-import br.com.controledeponto.exception.HorarioInferiorAoUltimoRegistradoException;
-import br.com.controledeponto.exception.HorarioJaRegistradoException;
-import br.com.controledeponto.exception.NaoPodeHaverMaisDeQuatroRegistrosException;
-import br.com.controledeponto.exception.NaoPodeRegistrarHorasEmFinalDeSemanaException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +12,7 @@ import java.util.List;
 class FolhaDePontoTest {
 
 	@Test
-	void deveCalcularHorasTotaisTrabalhadasNoMes() throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+	void deveCalcularHorasTotaisTrabalhadasNoMes() {
 		List<RegistroDeTrabalho> registrosDeTrabalho = List.of(
 			criarRegistroDeTrabalhoCompleto("2021-01-04"),
 			criarRegistroDeTrabalhoCompleto("2021-01-05"),
@@ -28,7 +23,7 @@ class FolhaDePontoTest {
 	}
 
 	@Test
-	void deveGerarHorasExcedentesQuandoFuncionarioTrabalharAMais() throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+	void deveGerarHorasExcedentesQuandoFuncionarioTrabalharAMais() {
 		List<RegistroDeTrabalho> registrosDeTrabalho = List.of(
 			criarRegistroDeTrabalhoExcedente("2021-01-04"),
 			criarRegistroDeTrabalhoExcedente("2021-01-05"),
@@ -39,7 +34,7 @@ class FolhaDePontoTest {
 	}
 
 	@Test
-	void naoDeveGerarHorasExcedentesQuandoFuncionarioTrabalharHorarioNormal() throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+	void naoDeveGerarHorasExcedentesQuandoFuncionarioTrabalharHorarioNormal() {
 		List<RegistroDeTrabalho> registrosDeTrabalho = List.of(
 			criarRegistroDeTrabalhoCompleto("2021-01-04"),
 			criarRegistroDeTrabalhoCompleto("2021-01-05"),
@@ -50,7 +45,7 @@ class FolhaDePontoTest {
 	}
 
 	@Test
-	void naoDeveGerarHorasExcedentesQuandoFuncionarioTrabalharHorasAMenos() throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+	void naoDeveGerarHorasExcedentesQuandoFuncionarioTrabalharHorasAMenos() {
 		List<RegistroDeTrabalho> registrosDeTrabalho = List.of(
 			criarRegistroDeTrabalhoIncompleto("2021-01-04"),
 			criarRegistroDeTrabalhoIncompleto("2021-01-05"),
@@ -61,7 +56,7 @@ class FolhaDePontoTest {
 	}
 
 	@Test
-	void deveGerarHorasDevidasQuandoFuncionarioTrabalharAMenos() throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+	void deveGerarHorasDevidasQuandoFuncionarioTrabalharAMenos() {
 		List<RegistroDeTrabalho> registrosDeTrabalho = List.of(
 			criarRegistroDeTrabalhoIncompleto("2021-01-04"),
 			criarRegistroDeTrabalhoIncompleto("2021-01-05"),
@@ -72,7 +67,7 @@ class FolhaDePontoTest {
 	}
 
 	@Test
-	void naoDeveGerarHorasDevidasQuandoFuncionarioTrabalharHorarioCompleto() throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+	void naoDeveGerarHorasDevidasQuandoFuncionarioTrabalharHorarioCompleto() {
 		List<RegistroDeTrabalho> registrosDeTrabalho = List.of(
 			criarRegistroDeTrabalhoCompleto("2021-01-04"),
 			criarRegistroDeTrabalhoCompleto("2021-01-05"),
@@ -83,7 +78,7 @@ class FolhaDePontoTest {
 	}
 
 	@Test
-	void naoDeveGerarHorasDevidasQuandoFuncionarioTrabalharAMais() throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+	void naoDeveGerarHorasDevidasQuandoFuncionarioTrabalharAMais() {
 		List<RegistroDeTrabalho> registrosDeTrabalho = List.of(
 			criarRegistroDeTrabalhoExcedente("2021-01-04"),
 			criarRegistroDeTrabalhoExcedente("2021-01-05"),
@@ -93,7 +88,7 @@ class FolhaDePontoTest {
 		Assertions.assertThat(folhaDePonto.getHorasDevidas()).isEqualTo(Duration.parse("PT0S"));
 	}
 
-	private RegistroDeTrabalho criarRegistroDeTrabalhoCompleto(String data) throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+	private RegistroDeTrabalho criarRegistroDeTrabalhoCompleto(String data) {
 		RegistroDeTrabalho registroDeTrabalho = new RegistroDeTrabalho(LocalDate.parse(data));
 		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse(data + "T09:00:00")));
 		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse(data + "T12:00:00")));
@@ -102,7 +97,7 @@ class FolhaDePontoTest {
 		return registroDeTrabalho;
 	}
 
-	private RegistroDeTrabalho criarRegistroDeTrabalhoExcedente(String data) throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+	private RegistroDeTrabalho criarRegistroDeTrabalhoExcedente(String data) {
 		RegistroDeTrabalho registroDeTrabalho = new RegistroDeTrabalho(LocalDate.parse(data));
 		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse(data + "T09:00:00")));
 		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse(data + "T12:00:00")));
@@ -111,7 +106,7 @@ class FolhaDePontoTest {
 		return registroDeTrabalho;
 	}
 
-	private RegistroDeTrabalho criarRegistroDeTrabalhoIncompleto(String data) throws NaoPodeHaverMaisDeQuatroRegistrosException, NaoPodeRegistrarHorasEmFinalDeSemanaException, HorarioInferiorAoUltimoRegistradoException, DeveHaverNoMinimoUmaHoraDeAlmocoException, HorarioJaRegistradoException {
+	private RegistroDeTrabalho criarRegistroDeTrabalhoIncompleto(String data) {
 		RegistroDeTrabalho registroDeTrabalho = new RegistroDeTrabalho(LocalDate.parse(data));
 		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse(data + "T09:00:00")));
 		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse(data + "T12:00:00")));

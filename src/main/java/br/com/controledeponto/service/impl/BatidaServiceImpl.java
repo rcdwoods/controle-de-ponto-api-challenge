@@ -5,7 +5,9 @@ import br.com.controledeponto.model.RegistroDeTrabalho;
 import br.com.controledeponto.repository.MomentoRepository;
 import br.com.controledeponto.service.BatidaService;
 import br.com.controledeponto.service.RegistroDeTrabalhoService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class BatidaServiceImpl implements BatidaService {
 
 	private MomentoRepository momentoRepository;

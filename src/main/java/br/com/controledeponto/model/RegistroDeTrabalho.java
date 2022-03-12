@@ -80,7 +80,7 @@ public class RegistroDeTrabalho {
 
 	private void validarRegistroDeMomento(Momento momento) {
 		if (hasMomentoRegistradoComHorarioSuperior(momento))
-			throw new HorarioInferiorAoUltimoRegistradoException("Horário inferior ao último registrado.");
+			throw new HorarioInferiorAoUltimoRegistradoException("Horário inferior ao último registrado");
 		if (hasMomentoRegistradoComOMesmoHorario(momento))
 			throw new HorarioJaRegistradoException("Horários já registrado");
 		if (this.momentosRegistrados.size() == LIMITE_DE_REGISTROS)
