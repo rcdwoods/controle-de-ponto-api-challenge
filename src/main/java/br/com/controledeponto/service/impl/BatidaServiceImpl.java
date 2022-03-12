@@ -8,15 +8,15 @@ import br.com.controledeponto.exception.NaoPodeRegistrarHorasEmFinalDeSemanaExce
 import br.com.controledeponto.model.Momento;
 import br.com.controledeponto.model.RegistroDeTrabalho;
 import br.com.controledeponto.repository.MomentoRepository;
-import br.com.controledeponto.service.MomentoService;
+import br.com.controledeponto.service.BatidaService;
 import br.com.controledeponto.service.RegistroDeTrabalhoService;
 
-public class MomentoServiceImpl implements MomentoService {
+public class BatidaServiceImpl implements BatidaService {
 
 	private MomentoRepository momentoRepository;
 	private RegistroDeTrabalhoService registroDeTrabalhoService;
 
-	MomentoServiceImpl(MomentoRepository momentoRepository, RegistroDeTrabalhoService registroDeTrabalhoService) {
+	BatidaServiceImpl(MomentoRepository momentoRepository, RegistroDeTrabalhoService registroDeTrabalhoService) {
 		this.momentoRepository = momentoRepository;
 		this.registroDeTrabalhoService = registroDeTrabalhoService;
 	}

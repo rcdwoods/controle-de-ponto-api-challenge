@@ -8,7 +8,7 @@ import br.com.controledeponto.exception.NaoPodeRegistrarHorasEmFinalDeSemanaExce
 import br.com.controledeponto.model.Momento;
 import br.com.controledeponto.model.RegistroDeTrabalho;
 import br.com.controledeponto.repository.MomentoRepository;
-import br.com.controledeponto.service.impl.MomentoServiceImpl;
+import br.com.controledeponto.service.impl.BatidaServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,18 +21,15 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ContextConfiguration(
-	classes = MomentoServiceImpl.class
+	classes = BatidaServiceImpl.class
 )
 @ExtendWith(SpringExtension.class)
-class MomentoServiceTest {
+class BatidaServiceTest {
 
 	@Autowired
-	private MomentoService momentoService;
+	private BatidaService batidaService;
 
 	@MockBean
 	private MomentoRepository momentoRepository;
@@ -52,7 +49,7 @@ class MomentoServiceTest {
 		Mockito.when(registroDeTrabalhoService.adicionarMomentoAoSeuRegistroDeTrabalho(momento))
 				.thenReturn(new RegistroDeTrabalho(LocalDate.parse("2021-01-01")));
 
-		Momento momentoSalvo = momentoService.salvarMomento(momento);
+		Momento momentoSalvo = batidaService.salvarMomento(momento);
 
 		Mockito.verify(registroDeTrabalhoService, Mockito.times(1)).adicionarMomentoAoSeuRegistroDeTrabalho(momento);
 		Assertions.assertThat(momentoSalvo).isEqualTo(momento);

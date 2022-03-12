@@ -9,7 +9,7 @@ import br.com.controledeponto.model.Momento;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface MomentoService {
+public interface BatidaService {
 	Momento salvarMomento(Momento momento) throws
 		NaoPodeHaverMaisDeQuatroRegistrosException,
 		NaoPodeRegistrarHorasEmFinalDeSemanaException,
