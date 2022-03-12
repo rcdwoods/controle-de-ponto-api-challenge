@@ -50,6 +50,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation "org.mapstruct:mapstruct:$mapstructVersion"
 	implementation 'org.flywaydb:flyway-core'
+	implementation "io.rest-assured:xml-path:$restAssuredVersion"
+	implementation "io.rest-assured:json-path:$restAssuredVersion"
 
 	annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
 
@@ -58,6 +60,8 @@ dependencies {
 	runtimeOnly 'mysql:mysql-connector-java'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation "io.rest-assured:spring-mock-mvc:$restAssuredVersion"
+	testImplementation "io.rest-assured:rest-assured:$restAssuredVersion"
 
 	swaggerCodegen "io.swagger:swagger-codegen-cli:$swaggerCodeGenVersion"
 	swaggerUI "org.webjars:swagger-ui:$swaggerUIVersion"
