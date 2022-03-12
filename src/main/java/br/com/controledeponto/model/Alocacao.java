@@ -32,7 +32,23 @@ public class Alocacao {
 		return dia;
 	}
 
+	public void setDia(LocalDate dia) {
+		this.dia = dia;
+	}
+
 	public Duration getTempo() {
 		return tempo;
+	}
+
+	public void setTempo(Duration tempo) {
+		this.tempo = tempo;
+	}
+
+	public String getNomeProjeto() {
+		return nomeProjeto;
+	}
+
+	public void setNomeProjeto(String nomeProjeto) {
+		this.nomeProjeto = nomeProjeto;
 	}
 }
