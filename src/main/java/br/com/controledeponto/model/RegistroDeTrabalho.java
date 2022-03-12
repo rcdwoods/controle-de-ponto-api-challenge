@@ -40,6 +40,10 @@ public class RegistroDeTrabalho {
 
 	public RegistroDeTrabalho() { }
 
+	public LocalDate getDia() {
+		return dia;
+	}
+
 	public Duration getHorasTrabalhadas() {
 		return getHorasDaPrimeiraEntradaESaida().plus(getHorasDaSegundaEntradaESaida());
 	}
