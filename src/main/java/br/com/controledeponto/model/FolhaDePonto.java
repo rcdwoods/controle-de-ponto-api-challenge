@@ -12,7 +12,7 @@ public class FolhaDePonto {
 	private List<RegistroDeTrabalho> registrosDeTrabalho;
 	private List<Alocacao> alocacoes;
 
-	FolhaDePonto(YearMonth mes, List<RegistroDeTrabalho> registrosDeTrabalho, List<Alocacao> alocacoes) {
+	public FolhaDePonto(YearMonth mes, List<RegistroDeTrabalho> registrosDeTrabalho, List<Alocacao> alocacoes) {
 		this.mes = mes;
 		this.registrosDeTrabalho = registrosDeTrabalho;
 		this.alocacoes = alocacoes;
@@ -21,16 +21,28 @@ public class FolhaDePonto {
 		calcularHorasDevidas();
 	}
 
-	Duration getHorasTrabalhadas() {
+	public YearMonth getMes() {
+		return this.mes;
+	}
+
+	public Duration getHorasTrabalhadas() {
 		return this.horasTrabalhadas;
 	}
 
-	Duration getHorasExcedentes() {
+	public Duration getHorasExcedentes() {
 		return this.horasExcedentes;
 	}
 
-	Duration getHorasDevidas() {
+	public Duration getHorasDevidas() {
 		return this.horasDevidas;
+	}
+
+	public List<RegistroDeTrabalho> getRegistrosDeTrabalho() {
+		return this.registrosDeTrabalho;
+	}
+
+	public List<Alocacao> getAlocacoes() {
+		return this.alocacoes;
 	}
 
 	private void calcularHorasTrabalhadas() {
