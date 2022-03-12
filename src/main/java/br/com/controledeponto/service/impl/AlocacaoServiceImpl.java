@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,14 @@ public class AlocacaoServiceImpl implements AlocacaoService {
 	@Override
 	public Alocacao alocarHoras(Alocacao alocacao) {
 		validarAlocacao(alocacao);
-		return alocacaoRepository.save(alocacao);
+		Optional<Alocacao> alocacaoExistenteNoProjeto = alocacaoRepository.findByDiaAndNomeProjeto(alocacao.getDia(), alocacao.getNomeProjeto());
+		alocacaoExistenteNoProjeto.ifPresent(alocacaoExistente -> alocacaoExistente.setTempo(alocacao.getTempo()));
+		return alocacaoRepository.save(alocacaoExistenteNoProjeto.orElse(alocacao));
+	}
+
+	@Override
+	public List<Alocacao> obterAlocacoesPorMes(YearMonth mes) {
+		return alocacaoRepository.findAllByDiaContaining(mes.toString());
 	}
 
 	private void validarAlocacao(Alocacao alocacao) {
