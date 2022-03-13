@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface RegistroDeTrabalhoRepository extends JpaRepository<RegistroDeTrabalho, Long> {
 	Optional<RegistroDeTrabalho> findByDia(LocalDate dia);
-	List<RegistroDeTrabalho> findAllByDiaContaining(String mes);
+	List<RegistroDeTrabalho> findAllByDiaBetween(LocalDate inicio, LocalDate fim);
 }

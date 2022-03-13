@@ -18,6 +18,7 @@ import java.util.Optional;
 @Service
 public class AlocacaoServiceImpl implements AlocacaoService {
 
+	private static final int PRIMEIRO_DIA_DO_MES = 1;
 	private AlocacaoRepository alocacaoRepository;
 	private RegistroDeTrabalhoService registroDeTrabalhoService;
 
@@ -30,13 +31,15 @@ public class AlocacaoServiceImpl implements AlocacaoService {
 	public Alocacao alocarHoras(Alocacao alocacao) {
 		validarAlocacao(alocacao);
 		Optional<Alocacao> alocacaoExistenteNoProjeto = alocacaoRepository.findByDiaAndNomeProjeto(alocacao.getDia(), alocacao.getNomeProjeto());
-		alocacaoExistenteNoProjeto.ifPresent(alocacaoExistente -> alocacaoExistente.setTempo(alocacao.getTempo()));
+		alocacaoExistenteNoProjeto.ifPresent(alocacaoExistente -> alocacaoExistente.setTempo(alocacaoExistente.getTempo().plus(alocacao.getTempo())));
 		return alocacaoRepository.save(alocacaoExistenteNoProjeto.orElse(alocacao));
 	}
 
 	@Override
 	public List<Alocacao> obterAlocacoesPorMes(YearMonth mes) {
-		return alocacaoRepository.findAllByDiaContaining(mes.toString());
+		LocalDate primeiroDiaDoMes = mes.atDay(PRIMEIRO_DIA_DO_MES);
+		LocalDate ultimoDiaDoMes = mes.atEndOfMonth();
+		return alocacaoRepository.findAllByDiaBetween(primeiroDiaDoMes, ultimoDiaDoMes);
 	}
 
 	private void validarAlocacao(Alocacao alocacao) {

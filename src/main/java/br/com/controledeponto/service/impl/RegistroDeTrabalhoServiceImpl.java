@@ -14,6 +14,7 @@ import java.util.Optional;
 @Service
 public class RegistroDeTrabalhoServiceImpl implements RegistroDeTrabalhoService {
 
+	private static final int PRIMEIRO_DIA_DO_MES = 1;
 	private RegistroDeTrabalhoRepository registroDeTrabalhoRepository;
 
 	RegistroDeTrabalhoServiceImpl(RegistroDeTrabalhoRepository registroDeTrabalhoRepository) {
@@ -27,7 +28,9 @@ public class RegistroDeTrabalhoServiceImpl implements RegistroDeTrabalhoService 
 
 	@Override
 	public List<RegistroDeTrabalho> obterRegistrosDeTrabalhoPorMes(YearMonth mes) {
-		return registroDeTrabalhoRepository.findAllByDiaContaining(mes.toString());
+		LocalDate primeiroDiaDoMes = mes.atDay(PRIMEIRO_DIA_DO_MES);
+		LocalDate ultimoDiaDoMes = mes.atEndOfMonth();
+		return registroDeTrabalhoRepository.findAllByDiaBetween(primeiroDiaDoMes, ultimoDiaDoMes);
 	}
 
 	@Override

@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface AlocacaoRepository extends JpaRepository<Alocacao, Long> {
 	List<Alocacao> findAllByDia(LocalDate dia);
-	List<Alocacao> findAllByDiaContaining(String mes);
+	List<Alocacao> findAllByDiaBetween(LocalDate inicio, LocalDate fim);
 	Optional<Alocacao> findByDiaAndNomeProjeto(LocalDate dia, String nomeProjeto);
 }
