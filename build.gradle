@@ -40,7 +40,8 @@ repositories {
 ext {
 	springFoxArtifacts = [
 			'springfox-swagger2',
-			'springfox-swagger-ui'
+			'springfox-swagger-ui',
+			'springfox-boot-starter'
 	]
 }
 
