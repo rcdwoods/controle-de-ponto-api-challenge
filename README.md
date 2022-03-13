@@ -65,8 +65,12 @@ Há três variáveis de ambiente, e todas referentes ao acesso do banco de dados
 - `/controle-de-ponto/v1/alocacoes`
 - `/controle-de-ponto/v1/folhas-de-ponto/{mês}`
 
-Mais detalhes sobre as requisições, você pode acessar o documento swagger da API, dentro do projeto, localizado em `/resources/swagger/controle-de-ponto-api_v1.yml`.
-Ou basta executar a API e acessar a interface Swagger da API através da rota `http://localhost:8080/controle-de-ponto/swagger-ui.html`
+
+
+## Visualização do Swagger
+
+Para acessar o Swagger UI e ter acesso aos detalhes das requisições, basta executar a API e acessar o endereço `localhost:8080/controle-de-ponto/swagger-ui/index.html`. 
+Outra forma de visualizar os detalhes das requisições é acessando o arquivo controle-de-ponto-api_v1.yml, contido no diretório resources/swagger.
 
 
 
