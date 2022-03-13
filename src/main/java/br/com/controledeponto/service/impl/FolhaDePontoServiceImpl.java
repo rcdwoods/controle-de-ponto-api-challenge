@@ -10,6 +10,7 @@ import br.com.controledeponto.service.RegistroDeTrabalhoService;
 import org.springframework.stereotype.Service;
 
 import java.time.YearMonth;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -26,8 +27,15 @@ public class FolhaDePontoServiceImpl implements FolhaDePontoService {
 	@Override
 	public FolhaDePonto gerarFolhaDePonto(YearMonth mes) {
 		List<RegistroDeTrabalho> registrosDoMes = registroDeTrabalhoService.obterRegistrosDeTrabalhoPorMes(mes);
-		if (registrosDoMes.isEmpty()) throw new NaoHaRegistrosDeTrabalhoNoMesException("Não há registros de trabalho nesse mês para gerar um relatório.");
+		registrosDoMes.sort(Comparator.comparing(RegistroDeTrabalho::getDia));
+		validarExistenciaDeRegistrosNoMes(registrosDoMes);
 		List<Alocacao> alocacoesDoMes = alocacaoService.obterAlocacoesPorMes(mes);
+		alocacoesDoMes.sort(Comparator.comparing(Alocacao::getDia));
 		return new FolhaDePonto(mes, registrosDoMes, alocacoesDoMes);
+	}
+
+	private void validarExistenciaDeRegistrosNoMes(List<RegistroDeTrabalho> registrosDoMes) {
+		if (registrosDoMes.isEmpty())
+			throw new NaoHaRegistrosDeTrabalhoNoMesException("Não há registros de trabalho nesse mês para gerar um relatório.");
 	}
 }

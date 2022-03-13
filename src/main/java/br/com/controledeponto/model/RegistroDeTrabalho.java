@@ -120,6 +120,7 @@ public class RegistroDeTrabalho {
 	}
 
 	private Momento getUltimoMomentoRegistrado() {
+		if (momentosRegistrados.isEmpty()) return null;
 		int posicaoDoUltimoMomento = this.momentosRegistrados.size() - NumberConstant.ONE;
 		return this.momentosRegistrados
 			.stream()
