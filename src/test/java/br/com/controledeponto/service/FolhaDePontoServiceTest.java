@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,13 +40,15 @@ class FolhaDePontoServiceTest {
 	@Test
 	void gerarFolhaDePontoComRegistrosDeTrabalhoESemAlocacoes() {
 		YearMonth mes = YearMonth.parse("2021-01");
-		List<RegistroDeTrabalho> registrosDoMes = List.of(
-			criarRegistroDeTrabalhoCompleto("2021-01-01"),
-			criarRegistroDeTrabalhoCompleto("2021-01-05"),
-			criarRegistroDeTrabalhoCompleto("2021-01-06")
+		List<RegistroDeTrabalho> registrosDoMes = new ArrayList<>(
+			List.of(
+				criarRegistroDeTrabalhoCompleto("2021-01-01"),
+				criarRegistroDeTrabalhoCompleto("2021-01-05"),
+				criarRegistroDeTrabalhoCompleto("2021-01-06")
+			)
 		);
 		Mockito.when(registroDeTrabalhoService.obterRegistrosDeTrabalhoPorMes(mes)).thenReturn(registrosDoMes);
-		Mockito.when(alocacaoService.obterAlocacoesPorMes(mes)).thenReturn(List.of());
+		Mockito.when(alocacaoService.obterAlocacoesPorMes(mes)).thenReturn(new ArrayList<>());
 
 		FolhaDePonto folhaDePontoDoMes = folhaDePontoService.gerarFolhaDePonto(mes);
 		Assertions.assertThat(folhaDePontoDoMes.getMes()).isEqualTo(mes);
@@ -55,14 +58,18 @@ class FolhaDePontoServiceTest {
 	@Test
 	void gerarFolhaDePontoComRegistrosDeTrabalhoEComAlocacoes() {
 		YearMonth mes = YearMonth.parse("2021-01");
-		List<RegistroDeTrabalho> registrosDoMes = List.of(
-			criarRegistroDeTrabalhoCompleto("2021-01-01"),
-			criarRegistroDeTrabalhoCompleto("2021-01-05"),
-			criarRegistroDeTrabalhoCompleto("2021-01-06")
+		List<RegistroDeTrabalho> registrosDoMes = new ArrayList<>(
+			List.of(
+				criarRegistroDeTrabalhoCompleto("2021-01-01"),
+				criarRegistroDeTrabalhoCompleto("2021-01-05"),
+				criarRegistroDeTrabalhoCompleto("2021-01-06")
+			)
 		);
-		List<Alocacao> alocacoesDoMes = List.of(
-			new Alocacao(LocalDate.parse("2021-01-01"), Duration.ofHours(8), ""),
-			new Alocacao(LocalDate.parse("2021-01-05"), Duration.ofHours(8), "")
+		List<Alocacao> alocacoesDoMes = new ArrayList<>(
+			List.of(
+				new Alocacao(LocalDate.parse("2021-01-01"), Duration.ofHours(8), ""),
+				new Alocacao(LocalDate.parse("2021-01-05"), Duration.ofHours(8), "")
+			)
 		);
 		Mockito.when(registroDeTrabalhoService.obterRegistrosDeTrabalhoPorMes(mes)).thenReturn(registrosDoMes);
 		Mockito.when(alocacaoService.obterAlocacoesPorMes(mes)).thenReturn(alocacoesDoMes);
@@ -76,7 +83,7 @@ class FolhaDePontoServiceTest {
 	@Test
 	void deveLancarExceptionQuandoNaoExistiremRegistrosDeTrabalhoNoMes() {
 		YearMonth mes = YearMonth.parse("2021-01");
-		Mockito.when(registroDeTrabalhoService.obterRegistrosDeTrabalhoPorMes(mes)).thenReturn(List.of());
+		Mockito.when(registroDeTrabalhoService.obterRegistrosDeTrabalhoPorMes(mes)).thenReturn(new ArrayList<>());
 
 		Exception exception = assertThrows(NaoHaRegistrosDeTrabalhoNoMesException.class, () -> {
 			folhaDePontoService.gerarFolhaDePonto(mes);

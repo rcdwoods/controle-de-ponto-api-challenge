@@ -27,6 +27,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,14 +69,18 @@ class FolhaDePontoApiTest {
 
 	@Test
 	void deveGerarUmaFolhaDePontoQuandoExistiremRegistrosNoMes() {
-		List<RegistroDeTrabalho> registrosDoMes = List.of(
-			criarRegistroDeTrabalhoCompleto("2021-01-01"),
-			criarRegistroDeTrabalhoCompleto("2021-01-05"),
-			criarRegistroDeTrabalhoCompleto("2021-01-06")
+		List<RegistroDeTrabalho> registrosDoMes = new ArrayList<>(
+			List.of(
+				criarRegistroDeTrabalhoCompleto("2021-01-01"),
+				criarRegistroDeTrabalhoCompleto("2021-01-05"),
+				criarRegistroDeTrabalhoCompleto("2021-01-06")
+			)
 		);
-		List<Alocacao> alocacoesDoMes = List.of(
-			new Alocacao(LocalDate.parse("2021-01-01"), Duration.ofHours(6), "BMW"),
-			new Alocacao(LocalDate.parse("2021-01-05"), Duration.ofHours(6), "Livelo")
+		List<Alocacao> alocacoesDoMes = new ArrayList<>(
+			List.of(
+				new Alocacao(LocalDate.parse("2021-01-01"), Duration.ofHours(6), "BMW"),
+				new Alocacao(LocalDate.parse("2021-01-05"), Duration.ofHours(6), "Livelo")
+			)
 		);
 		Mockito.when(registroDeTrabalhoService.obterRegistrosDeTrabalhoPorMes(YearMonth.parse("2021-01"))).thenReturn(registrosDoMes);
 		Mockito.when(alocacaoService.obterAlocacoesPorMes(YearMonth.parse("2021-01"))).thenReturn(alocacoesDoMes);
@@ -96,7 +101,7 @@ class FolhaDePontoApiTest {
 
 	@Test
 	void deveGerarUmaFolhaDePontoEOsRegistrosDevemPossuirDiaETempo() throws JsonProcessingException {
-		List<RegistroDeTrabalho> registroDoMes = List.of(criarRegistroDeTrabalhoCompleto("2021-01-01"));
+		List<RegistroDeTrabalho> registroDoMes = new ArrayList<>(List.of(criarRegistroDeTrabalhoCompleto("2021-01-01")));
 		Mockito.when(registroDeTrabalhoService.obterRegistrosDeTrabalhoPorMes(YearMonth.parse("2021-01"))).thenReturn(registroDoMes);
 
 		Relatorio relatorio = given()
@@ -114,7 +119,7 @@ class FolhaDePontoApiTest {
 
 	@Test
 	void deveLancarExceptionQuandoNaoHouveremRegistrosNoMes() {
-		Mockito.when(registroDeTrabalhoService.obterRegistrosDeTrabalhoPorMes(YearMonth.parse("2021-01"))).thenReturn(List.of());
+		Mockito.when(registroDeTrabalhoService.obterRegistrosDeTrabalhoPorMes(YearMonth.parse("2021-01"))).thenReturn(new ArrayList<>());
 
 		given()
 			.contentType(ContentType.JSON)
