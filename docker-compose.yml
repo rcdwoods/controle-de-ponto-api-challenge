@@ -12,3 +12,15 @@ services:
       - MYSQL_PASSWORD=controle-de-ponto
     ports:
       - 3306:3306
+  controle-de-ponto-api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: controle-de-ponto/controle-de-ponto-api
+    container_name: controle-de-ponto-api
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
