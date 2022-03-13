@@ -24,6 +24,7 @@ public class AlocacaoApiImpl implements AlocacoesApi {
 		this.alocacaoConverter = alocacaoConverter;
 	}
 
+	@Override
 	@PostMapping
 	public ResponseEntity<Alocacao> alocarHoras(@Valid Alocacao alocacao) {
 		br.com.controledeponto.model.Alocacao alocacaoConvertida = alocacaoConverter.converter(alocacao);

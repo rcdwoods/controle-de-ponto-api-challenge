@@ -25,6 +25,7 @@ public class FolhaDePontoApiImpl implements FolhasDePontoApi {
 	@Autowired
 	private FolhaDePontoConverter folhaDePontoConverter;
 
+	@Override
 	@PostMapping("/{mes}")
 	public ResponseEntity<Relatorio> gerarFolhaDePonto(@PathVariable @Valid String mes) {
 		FolhaDePonto folhaDePontoDoMes = folhaDePontoService.gerarFolhaDePonto(YearMonth.parse(mes));

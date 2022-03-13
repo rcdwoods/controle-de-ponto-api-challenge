@@ -47,9 +47,9 @@ class RegistroDeTrabalhoTest {
 	void naoDeveRegistrarUmMomentoELancarUmaExceptionQuandoDataHoraForMenorDoQueOMomentoAnterior() {
 		RegistroDeTrabalho registroDeTrabalho = new RegistroDeTrabalho(LocalDate.parse("2022-12-01"));
 		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T08:00:00")));
+		Momento momentoComHorarioMenor = new Momento(LocalDateTime.parse("2022-12-01T07:00:00"));
 
 		Exception exception = org.junit.jupiter.api.Assertions.assertThrows(HorarioInferiorAoUltimoRegistradoException.class, () -> {
-			Momento momentoComHorarioMenor = new Momento(LocalDateTime.parse("2022-12-01T07:00:00"));
 			registroDeTrabalho.registrarMomento(momentoComHorarioMenor);
 		});
 
@@ -60,9 +60,9 @@ class RegistroDeTrabalhoTest {
 	void naoDeveRegistrarUmMomentoELancarUmaExceptionQuandoDataHoraJaTiverSidoRegistrada() {
 		RegistroDeTrabalho registroDeTrabalho = new RegistroDeTrabalho(LocalDate.parse("2022-12-01"));
 		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T08:00:00")));
+		Momento momentoComHorarioJaRegistrado = new Momento(LocalDateTime.parse("2022-12-01T08:00:00"));
 
 		Exception exception = org.junit.jupiter.api.Assertions.assertThrows(HorarioJaRegistradoException.class, () -> {
-			Momento momentoComHorarioJaRegistrado = new Momento(LocalDateTime.parse("2022-12-01T08:00:00"));
 			registroDeTrabalho.registrarMomento(momentoComHorarioJaRegistrado);
 		});
 
@@ -76,9 +76,9 @@ class RegistroDeTrabalhoTest {
 		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T12:00:00")));
 		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T13:00:00")));
 		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T18:00:00")));
+		Momento momentoComHorarioJaRegistrado = new Momento(LocalDateTime.parse("2022-12-01T19:00:00"));
 
 		Exception exception = org.junit.jupiter.api.Assertions.assertThrows(NaoPodeHaverMaisDeQuatroRegistrosException.class, () -> {
-			Momento momentoComHorarioJaRegistrado = new Momento(LocalDateTime.parse("2022-12-01T19:00:00"));
 			registroDeTrabalho.registrarMomento(momentoComHorarioJaRegistrado);
 		});
 
@@ -91,9 +91,9 @@ class RegistroDeTrabalhoTest {
 		RegistroDeTrabalho registroDeTrabalho = new RegistroDeTrabalho(LocalDate.parse("2022-12-01"));
 		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T08:00:00")));
 		registroDeTrabalho.registrarMomento(new Momento(LocalDateTime.parse("2022-12-01T12:00:00")));
+		Momento momentoComHorarioJaRegistrado = new Momento(LocalDateTime.parse(dataHora));
 
 		Exception exception = org.junit.jupiter.api.Assertions.assertThrows(DeveHaverNoMinimoUmaHoraDeAlmocoException.class, () -> {
-			Momento momentoComHorarioJaRegistrado = new Momento(LocalDateTime.parse(dataHora));
 			registroDeTrabalho.registrarMomento(momentoComHorarioJaRegistrado);
 		});
 
@@ -104,9 +104,9 @@ class RegistroDeTrabalhoTest {
 	@ValueSource(strings = {"2022-01-01T09:00:00", "2022-01-02T09:00:00"})
 	void naoDeveRegistrarUmMomentoELancarUmaExceptionQuandoForEmUmFinalDeSemana(String dataHora) {
 		RegistroDeTrabalho registroDeTrabalho = new RegistroDeTrabalho(LocalDate.parse(dataHora.substring(0,10)));
+		Momento momentoEmFinalDeSemana = new Momento(LocalDateTime.parse(dataHora));
 
 		Exception exception = org.junit.jupiter.api.Assertions.assertThrows(NaoPodeRegistrarHorasEmFinalDeSemanaException.class, () -> {
-			Momento momentoEmFinalDeSemana = new Momento(LocalDateTime.parse(dataHora));
 			registroDeTrabalho.registrarMomento(momentoEmFinalDeSemana);
 		});
 

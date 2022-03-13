@@ -25,6 +25,7 @@ public class BatidaApiImpl implements BatidasApi {
 		this.momentoConverter = momentoConverter;
 	}
 
+	@Override
 	@PostMapping
 	public ResponseEntity<Momento> baterPonto(@Valid Momento momento) {
 		br.com.controledeponto.model.Momento momentoConvertido = momentoConverter.converter(momento);

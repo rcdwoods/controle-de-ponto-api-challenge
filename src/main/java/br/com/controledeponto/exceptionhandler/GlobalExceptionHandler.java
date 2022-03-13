@@ -1,4 +1,4 @@
-package br.com.controledeponto.exceptionHandler;
+package br.com.controledeponto.exceptionhandler;
 
 import br.com.controledeponto.exception.DeveHaverNoMinimoUmaHoraDeAlmocoException;
 import br.com.controledeponto.exception.HorarioInferiorAoUltimoRegistradoException;
