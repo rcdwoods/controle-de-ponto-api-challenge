@@ -14,7 +14,7 @@ apply from: 'plugins/detekt.gradle'
 apply plugin: 'checkstyle'
 
 group = 'br.com.controle-de-ponto'
-version = '0.0.1-SNAPSHOT'
+version = ''
 sourceCompatibility = '11'
 
 sourceSets {
