@@ -43,7 +43,7 @@ Há três variáveis de ambiente, e todas referentes ao acesso do banco de dados
 
 
 
-## Limpar, compilar, executar testes de unidade e cobertura
+## Limpar, compilar, executar testes de unidade e cobertura, qualidade de código
 
 - `./gradlew clean`
   Limpa os dados gerados pelo build do projeto, como o jar da aplicação.
@@ -53,6 +53,9 @@ Há três variáveis de ambiente, e todas referentes ao acesso do banco de dados
 
 - `./gradlew test`
   Executa todos os testes do projeto.
+  
+  - `./gradlew sonarqube`
+  Executa a análise da qualidade do código, e a mesma ficará disponível no SonarCloud. Obs: é necessário as credendiais, mas o projeto possui essa step incluída na pipeline, então qualquer interação com o repositório será analisada pelo Sonar.
 
   
 
@@ -64,3 +67,16 @@ Há três variáveis de ambiente, e todas referentes ao acesso do banco de dados
 
 Mais detalhes sobre as requisições, você pode acessar o documento swagger da API, dentro do projeto, localizado em `/resources/swagger/controle-de-ponto-api_v1.yml`.
 Ou basta executar a API e acessar a interface Swagger da API através da rota `http://localhost:8080/controle-de-ponto/swagger-ui.html`
+
+
+
+## De quais ferramentas/tecnologias o projeto faz uso?
+
+- Spring
+- Swagger
+- Flyway Migration
+- RestAssured
+- SonarQube
+- Linter
+- Mapstruct
+- Pipeline para build, testes e análise da qualidade do código.
