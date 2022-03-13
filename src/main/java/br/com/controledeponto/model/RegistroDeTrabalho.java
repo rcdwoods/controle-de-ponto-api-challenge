@@ -103,8 +103,7 @@ public class RegistroDeTrabalho {
 	private boolean hasMenosHorasDeAlmocoDoQueOMinimo(Momento momento) {
 		if (this.momentosRegistrados.size() != NumberConstant.TWO) return false;
 		Momento ultimoMomentoRegistrado = getUltimoMomentoRegistrado();
-		long diferencaEmHorasEntreUltimoMomento =
-			Duration.between(ultimoMomentoRegistrado.getDataHora(), momento.getDataHora()).toHours();
+		long diferencaEmHorasEntreUltimoMomento = Duration.between(ultimoMomentoRegistrado.getDataHora(), momento.getDataHora()).toHours();
 		return diferencaEmHorasEntreUltimoMomento == NumberConstant.ZERO;
 	}
 
@@ -121,7 +120,6 @@ public class RegistroDeTrabalho {
 	}
 
 	private Momento getUltimoMomentoRegistrado() {
-		if (momentosRegistrados.isEmpty()) return null;
 		int posicaoDoUltimoMomento = this.momentosRegistrados.size() - NumberConstant.ONE;
 		return this.momentosRegistrados
 			.stream()
